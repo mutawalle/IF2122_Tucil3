@@ -65,58 +65,58 @@ const Navbar = () => {
             })}
         </Flex>
         <Show below="lg">
-        <IconButton
-        bg="transparent"
-        aria-label="Open Menu"
-        size="lg"
-        icon={<HamburgerIcon w={6} h={6} color="black" />}
-        onClick={onOpen}
-        display={isOpen ? 'none' : 'block'}
-        />
-        <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={drawerRef}
-        >
-        <DrawerOverlay />
-        <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerBody bg="##D9D9DB">
-            <Flex
-                alignItems="flex-start"
-                justifyContent="center"
-                minH="90vh"
-                flexDirection="column"
-                gap={4}
+            <IconButton
+            bg="transparent"
+            aria-label="Open Menu"
+            size="lg"
+            icon={<HamburgerIcon w={6} h={6} color="black" />}
+            onClick={onOpen}
+            display={isOpen ? 'none' : 'block'}
+            />
+            <Drawer
+            isOpen={isOpen}
+            placement="right"
+            onClose={onClose}
+            finalFocusRef={drawerRef}
             >
-                {links.map((item) => {
-                const match = matchPath(
-                    { path: item.link },
-                    window.location.pathname
-                );
-                return (
-                    <Link key={item.name} to={item.link}>
-                    <Text
-                        textUnderlineOffset={5}
-                        color={match ? '#000000' : '#474747'}
-                        textDecoration={match ? 'underline' : 'none'}
-                        textDecorationColor="#000000"
-                        _hover={{
-                        color: '#000000',
-                        textDecoration: 'underline',
-                        textDecorationColor: '#000000'
-                        }}
-                    >
-                        {item.name}
-                    </Text>
-                    </Link>
-                );
-                })}
-            </Flex>
-            </DrawerBody>
-        </DrawerContent>
-        </Drawer>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerBody bg="##D9D9DB">
+                        <Flex
+                            alignItems="flex-start"
+                            justifyContent="center"
+                            minH="90vh"
+                            flexDirection="column"
+                            gap={4}
+                        >
+                            {links.map((item) => {
+                            const match = matchPath(
+                                { path: item.link },
+                                window.location.pathname
+                            );
+                            return (
+                                <Link key={item.name} to={item.link}>
+                                <Text
+                                    textUnderlineOffset={5}
+                                    color={match ? '#000000' : '#474747'}
+                                    textDecoration={match ? 'underline' : 'none'}
+                                    textDecorationColor="#000000"
+                                    _hover={{
+                                    color: '#000000',
+                                    textDecoration: 'underline',
+                                    textDecorationColor: '#000000'
+                                    }}
+                                >
+                                    {item.name}
+                                </Text>
+                                </Link>
+                            );
+                            })}
+                        </Flex>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
         </Show>
         </Flex>
     )
