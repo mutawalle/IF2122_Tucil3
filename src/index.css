@@ -1,13 +1,23 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Heading */
+@font-face {
+  font-family: 'Heading';
+  src: url('./assets/fonts/Magilio.otf');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Sub Heading */
+@font-face {
+  font-family: 'Subheading';
+  src: url('./assets/fonts/Alegreya-SemiBold.ttf');
+}
+
+/* Body */
+@font-face {
+  font-family: 'Body';
+  src: url('./assets/fonts/AlegreyaSans-Regular.ttf');
+}
+
+/* Caption */
+@font-face {
+  font-family: 'Caption';
+  src: url('./assets/fonts/AlegreyaSans-Light.ttf');
 }
