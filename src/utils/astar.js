@@ -1,3 +1,23 @@
+const { Console } = require('console');
+
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+  return d;
+}
+
+function toRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
+
 function readTxtFile(filePath) {
     const fs = require('fs');
   // baca file dengan fs.readFileSync()
@@ -51,6 +71,43 @@ function euclideanDistance(point1, point2) {
     return Math.sqrt(dx * dx + dy * dy);
   }
 
-function astar(graph,start,goal){
-    
-}
+  function astar(graph, start, goal) {
+    let heuristic = []
+    graph.node.forEach(element => {
+      heuristic.push(haversine(graph.node[goal].x,graph.node[goal].y,element.x,element.y))
+      
+    });
+    let queue = [[start, 0,heuristic[start],[start]]];
+    while(queue.length > 0){
+      let current = queue.shift();
+      if(current[0] == goal){
+        return [current[2],current[3]];
+      }
+      for (let i = 0; i < graph.matrix[current[0]].length; i++) {
+        if(graph.matrix[current[0]][i] != 0){
+          let cost = current[1]+haversine(graph.node[current[0]].x,graph.node[current[0]].y,graph.node[i].x,graph.node[i].y);
+          let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
+          queue.push(temp);
+        }
+      }
+      queue.sort((a,b) => a[2]-b[2]);
+      console.log(queue);
+      queue.forEach(element => {
+        console.log(graph.node[element[0]].nama,heuristic[element[0]])
+      });
+    }
+
+  }
+  
+
+let graph = readTxtFile("src/utils/test.txt");
+let start = 0;
+let goal = 1;
+let [a,b] = astar(graph, start, goal);
+b.forEach(element => {
+  console.log(element)
+  console.log(graph.node[element].nama);   
+});
+console.log(a,b);
+
+  
