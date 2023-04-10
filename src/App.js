@@ -1,13 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import InputFilePage from "./pages/InputFilePage";
-import InputApiPage from "./pages/InputApiPage";
+import Home from "./pages/Home/Home";
+import InputApiPage from "./pages/inputApi/InputApiPage";
+import InputFilePage from "./pages/inputFile/InputFilePage";
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<InputFilePage/>}/>
         <Route path="/api" element={<InputApiPage/>}/>
+        <Route path="/file" element={<InputFilePage/>}/>
+        <Route path="/" element={<Home/>}/>
       </Routes>
     </Router>
   );

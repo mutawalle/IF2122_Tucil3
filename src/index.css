@@ -11,7 +11,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Body */
+@font-face {
+  font-family: 'Body';
+  src: url('./assets/fonts/AlegreyaSans-Regular.ttf');
+}
+
+/* Caption */
+@font-face {
+  font-family: 'Caption';
+  src: url('./assets/fonts/AlegreyaSans-Light.ttf');
 }
