@@ -1,5 +1,3 @@
-const { Console } = require('console');
-
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the earth in km
   const dLat = toRadians(lat2 - lat1);
@@ -70,8 +68,8 @@ function euclideanDistance(point1, point2) {
     const dy = point2.y - point1.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
-
-  function astar(graph, start, goal) {
+/* perhitungan jarak menggunakan haversine */
+  function astarHaversine(graph, start, goal) {
     let heuristic = []
     graph.node.forEach(element => {
       heuristic.push(haversine(graph.node[goal].x,graph.node[goal].y,element.x,element.y))
@@ -91,23 +89,58 @@ function euclideanDistance(point1, point2) {
         }
       }
       queue.sort((a,b) => a[2]-b[2]);
-      console.log(queue);
-      queue.forEach(element => {
-        console.log(graph.node[element[0]].nama,heuristic[element[0]])
-      });
+      // console.log(queue);
+      // queue.forEach(element => {
+      //   console.log(graph.node[element[0]].nama,heuristic[element[0]])
+      // });
     }
 
   }
   
+  /* perhitungan jarak menggunakan euclidean */
+  function astarEuclidean(graph, start, goal) {
+    let heuristic = []
+    graph.node.forEach(element => {
+      heuristic.push(euclideanDistance(graph.node[goal],element))
+    });
+    let queue = [[start, 0,heuristic[start],[start]]];
+    while(queue.length > 0){
+      let current = queue.shift();
+      if(current[0] == goal){
+        return [current[2],current[3]];
+      }
+      for (let i = 0; i < graph.matrix[current[0]].length; i++) {
+        if(graph.matrix[current[0]][i] != 0){
+          let cost = current[1]+euclideanDistance(graph.node[current[0]],graph.node[i]);
+          let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
+          queue.push(temp);
+        }
+      }
+      queue.sort((a,b) => a[2]-b[2]);
+      // console.log(queue);
+      // queue.forEach(element => {
+      //   console.log(graph.node[element[0]].nama,heuristic[element[0]])
+      // });
+    }
+  }
 
-let graph = readTxtFile("src/utils/test.txt");
-let start = 0;
-let goal = 1;
-let [a,b] = astar(graph, start, goal);
+
+let graph = readTxtFile("src/utils/test2.txt");
+let start = 1;
+let goal = 7;
+let [a,b] = astarHaversine(graph, start, goal);
+let [c,d] = astarEuclidean(graph, start, goal);
 b.forEach(element => {
   console.log(element)
   console.log(graph.node[element].nama);   
 });
+console.log("haversine");
 console.log(a,b);
+console.log("euclidean");
+d.forEach(element => {
+  console.log(element)
+  console.log(graph.node[element].nama);   
+});
+console.log(c,d);
 
   

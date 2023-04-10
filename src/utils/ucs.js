@@ -1,3 +1,20 @@
+function haversine(lat1, lon1, lat2, lon2) {
+  const R = 6371; // Radius of the earth in km
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const d = R * c; // Distance in km
+  return d;
+}
+
+function toRadians(degrees) {
+  return degrees * Math.PI / 180;
+}
+
 function readTxtFile(filePath) {
     const fs = require('fs');
   // baca file dengan fs.readFileSync()
@@ -52,8 +69,8 @@ function euclideanDistance(point1, point2) {
   }
 
 
-
-function ucs(graph, start, goal) {
+/* perhitungan menggunakan euclidean distance */
+function ucsEuclidean(graph, start, goal) {
     let queue = [[start, 0,[start]]];
     let visited = new Set();
   
@@ -79,16 +96,48 @@ function ucs(graph, start, goal) {
     return null;
   }
   
+/* perhitungan menggunakan haversine distance */
+function ucsHaversine(graph, start, goal) {
+    let queue = [[start, 0,[start]]];
+    let visited = new Set();
+    while (queue.length > 0) {
+      let [current, cost,riwayat] = queue.shift();
+        if (current === goal) {
+        return [cost,riwayat];
+      }
+  
+    
+      visited.add(current);
+  
+      
+      for (let i = 0; i < graph.matrix[current].length; i++) {
+        if (graph.matrix[current][i] === 1 && !visited.has(i)) {
+          newCost = cost + haversine(graph.node[current].x, graph.node[current].y, graph.node[i].x, graph.node[i].y);
+          queue.push([i, newCost,riwayat.concat(i)]);
+        }
+      }
+      queue.sort((a, b) => a[1] - b[1]);
+    }
+  
+    return null;
+  }
+
   // test
 
   
-let graph = readTxtFile("src/utils/test.txt")
-let [a,b] = ucs(graph, 0, 1)
+let graph = readTxtFile("src/utils/test2.txt")
+let [a,b] = ucsEuclidean(graph, 1, 7)
+let [c,d] = ucsHaversine(graph, 1, 7)
+console.log("euclidean")
 b.forEach(element => {
     console.log(element)
     console.log(graph.node[element].nama);   
 });
 console.log(a,b); // output: 2 (jalur terpendek dari node 0 ke 3 adalah 0 -> 1 -> 3 dengan cost 2)
-  
-
+console.log("haversine")
+d.forEach(element => {
+  console.log(element)
+  console.log(graph.node[element].nama);   
+});
+console.log(c,d);
 
