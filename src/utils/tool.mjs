@@ -1,4 +1,4 @@
-function readTxtFile(filePath) {
+export function readTxtFile(filePath) {
     const fs = require('fs');
   // baca file dengan fs.readFileSync()
   const data = fs.readFileSync(filePath, 'utf8');
@@ -45,8 +45,9 @@ return graph;
 
   
 
-function euclideanDistance(point1, point2) {
+export function euclideanDistance(point1, point2) {
     const dx = point2.x - point1.x;
     const dy = point2.y - point1.y;
     return Math.sqrt(dx * dx + dy * dy);
   }
+
