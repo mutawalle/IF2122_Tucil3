@@ -15,7 +15,7 @@ function InputFilePage() {
           </Heading>
           <Input type="file" onChange={(e) => setFile(e.target.files[0].name)} />
           <Text>{file}</Text>
-          <Button colorScheme="blue" size="lg" onClick={() => console.log(file)}>Submit</Button>
+          <Button colorScheme="blackAlpha" size="lg" onClick={() => console.log(file)}>Submit</Button>
         </Flex>
       </Box>
       <Footer/>
