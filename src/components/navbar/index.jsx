@@ -15,7 +15,7 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import { Link, matchPath } from 'react-router-dom';
 
 const Navbar = () => {
-    const links = [{name : 'Home', link : '/'}, {name : 'File', link : '/file'}, {name : 'Api', link : '/api'}];
+    const links = [{name : 'Home', link : '/'}, {name : 'File', link : '/file'}, {name : 'Map', link : '/map'}];
     const { isOpen, onOpen, onClose } = useDisclosure();
     const drawerRef = useRef<HTMLButtonElement>(null);
     return (
