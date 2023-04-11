@@ -16,8 +16,3 @@ function print_matrix(matrix) {
     }
 }
 
-
-
-// const adjacency_matrix = read_file('src/utils/test.txt');
-// console.log(typeof adjacency_matrix[1][0], adjacency_matrix[1][0]);
-// print_matrix(adjacency_matrix);

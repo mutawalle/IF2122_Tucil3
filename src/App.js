@@ -8,8 +8,8 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/api" element={<InputApiPage/>}/>
-        <Route path="/file" element={<InputFilePage/>}/>
+        {/* <Route path="/api" element={<InputApiPage/>}/>
+        <Route path="/file" element={<InputFilePage/>}/> */}
         <Route path="/" element={<Home/>}/>
       </Routes>
     </Router>
