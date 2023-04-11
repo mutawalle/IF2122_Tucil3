@@ -16,35 +16,35 @@ function toRadians(degrees) {
 }
 
 
-function readTxtFile(filePath) {
-  const fs = require('fs');
-  const data = fs.readFileSync(filePath, 'utf8');
-  var lines = data.split("\n");
-  var nodes = [];
-  var adjacencyMatrix = [];
-  for (var i = 1; i < lines.length; i++) {
-    var row = lines[i].trim().split(" ").map(Number);
-    var nama = lines[i].trim().split(" ").map(String)[0];
-    if (i-1 < lines[0]) {
-      var node = {
-        "id": i-1,
-        "nama":nama,
-        "x": row[1],
-        "y": row[2]
-      };
-      nodes.push(node);
-    }
-    else {
-      adjacencyMatrix.push(row);
-    }
-  }
-  var graph = {
-    "node": nodes,
-    "matrix": adjacencyMatrix
-  };
+// function readTxtFile(filePath) {
+//   const fs = require('fs');
+//   const data = fs.readFileSync(filePath, 'utf8');
+//   var lines = data.split("\n");
+//   var nodes = [];
+//   var adjacencyMatrix = [];
+//   for (var i = 1; i < lines.length; i++) {
+//     var row = lines[i].trim().split(" ").map(Number);
+//     var nama = lines[i].trim().split(" ").map(String)[0];
+//     if (i-1 < lines[0]) {
+//       var node = {
+//         "id": i-1,
+//         "nama":nama,
+//         "x": row[1],
+//         "y": row[2]
+//       };
+//       nodes.push(node);
+//     }
+//     else {
+//       adjacencyMatrix.push(row);
+//     }
+//   }
+//   var graph = {
+//     "node": nodes,
+//     "matrix": adjacencyMatrix
+//   };
 
-return graph;
-}
+// return graph;
+// }
 
 export function euclideanDistance(point1, point2) {
   const dx = point2.x - point1.x;
@@ -82,7 +82,7 @@ export function euclideanDistance(point1, point2) {
   }
   
   /* perhitungan jarak menggunakan euclidean */
-  function astarEuclidean(graph, start, goal) {
+export function astarEuclidean(graph, start, goal) {
     let heuristic = []
     let visited = new Set();
     graph.node.forEach(element => {
@@ -109,7 +109,7 @@ export function euclideanDistance(point1, point2) {
   }
 
     /* jarak menggunakan graph berbobot */
-    function astarEuclidean(graph, start, goal) {
+    function astarEuclidean2(graph, start, goal) {
       let heuristic = []
     let visited = new Set();
     graph.node.forEach(element => {
@@ -136,20 +136,20 @@ export function euclideanDistance(point1, point2) {
     }
 
 
-let graph = readTxtFile("src/utils/test.txt");
-let start = 0;
-let goal = 1;
-if(astarHaversine(graph, start, goal) == null){
-  console.log("tidak ada jalur");
-}else{
-  console.log("haversine");
-  let [a,b] = astarHaversine(graph, start, goal);
-  console.log(a,b);
-  b.forEach(element => {
-    console.log(graph.node[element].nama);
-  }
-  );
-}
+// let graph = readTxtFile("src/utils/test.txt");
+// let start = 0;
+// let goal = 1;
+// if(astarHaversine(graph, start, goal) == null){
+//   console.log("tidak ada jalur");
+// }else{
+//   console.log("haversine");
+//   let [a,b] = astarHaversine(graph, start, goal);
+//   console.log(a,b);
+//   b.forEach(element => {
+//     console.log(graph.node[element].nama);
+//   }
+//   );
+// }
 // console.log(a,b);
 // console.log("euclidean");
 // d.forEach(element => {

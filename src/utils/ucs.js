@@ -15,34 +15,34 @@ function toRadians(degrees) {
   return degrees * Math.PI / 180;
 }
 
-function readTxtFile(filePath) {
-  const fs = require('fs');
-  const data = fs.readFileSync(filePath, 'utf8');
-  var lines = data.split("\n");
-  var nodes = [];
-  var adjacencyMatrix = [];
-  for (var i = 1; i < lines.length; i++) {
-    var row = lines[i].trim().split(" ").map(Number);
-    var nama = lines[i].trim().split(" ").map(String)[0];
-    if (i-1 < lines[0]) {
-      var node = {
-        "id": i-1,
-        "nama":nama,
-        "x": row[1],
-        "y": row[2]
-      };
-      nodes.push(node);
-    }
-    else {
-      adjacencyMatrix.push(row);
-    }
-  }
-  var graph = {
-    "node": nodes,
-    "matrix": adjacencyMatrix
-  };
-  return graph;
-}
+// function readTxtFile(filePath) {
+//   const fs = require('fs');
+//   const data = fs.readFileSync(filePath, 'utf8');
+//   var lines = data.split("\n");
+//   var nodes = [];
+//   var adjacencyMatrix = [];
+//   for (var i = 1; i < lines.length; i++) {
+//     var row = lines[i].trim().split(" ").map(Number);
+//     var nama = lines[i].trim().split(" ").map(String)[0];
+//     if (i-1 < lines[0]) {
+//       var node = {
+//         "id": i-1,
+//         "nama":nama,
+//         "x": row[1],
+//         "y": row[2]
+//       };
+//       nodes.push(node);
+//     }
+//     else {
+//       adjacencyMatrix.push(row);
+//     }
+//   }
+//   var graph = {
+//     "node": nodes,
+//     "matrix": adjacencyMatrix
+//   };
+//   return graph;
+// }
 
 function euclideanDistance(point1, point2) {
     const dx = point2.x - point1.x;
@@ -121,7 +121,7 @@ function ucsGraphBerbobot(graph,start,goal){
     
     for (let i = 0; i < graph.matrix[current].length; i++) {
       if (graph.matrix[current][i] > 0 && !visited.has(i)) {
-        newCost = cost + graph.matrix[current][i];
+        let newCost = cost + graph.matrix[current][i];
         queue.push([i, newCost,riwayat.concat(i)]);
       }
     }
@@ -131,19 +131,19 @@ function ucsGraphBerbobot(graph,start,goal){
   return null;
 }
 
-let graph = readTxtFile("src/utils/test2.txt")
-if(ucsEuclidean(graph, 0, 8)==null){
-  console.log("tidak ada jalur")
-}else{
-let [a,b] = ucsEuclidean(graph, 0, 8)
-  console.log("euclidean")
-  b.forEach(element => {
-      console.log(element)
-      console.log(graph.node[element].nama);   
-  });
-  console.log(a,b); 
-  console.log("haversine")
-}
+// let graph = readTxtFile("src/utils/test2.txt")
+// if(ucsEuclidean(graph, 0, 8)==null){
+//   console.log("tidak ada jalur")
+// }else{
+// let [a,b] = ucsEuclidean(graph, 0, 8)
+//   console.log("euclidean")
+//   b.forEach(element => {
+//       console.log(element)
+//       console.log(graph.node[element].nama);   
+//   });
+//   console.log(a,b); 
+//   console.log("haversine")
+// }
 // let [c,d] = ucsHaversine(graph, 1, 7)
 // d.forEach(element => {
 //   console.log(element)
