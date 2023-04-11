@@ -75,6 +75,7 @@ function euclideanDistance(point1, point2) {
         }
       }
       queue.sort((a,b) => a[2] - b[2]);
+      console.log(queue);
     }
     return null;
 
@@ -141,6 +142,7 @@ let goal = 1;
 if(astarHaversine(graph, start, goal) == null){
   console.log("tidak ada jalur");
 }else{
+  console.log("haversine");
   let [a,b] = astarHaversine(graph, start, goal);
   console.log(a,b);
   b.forEach(element => {
