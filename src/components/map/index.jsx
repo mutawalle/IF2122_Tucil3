@@ -3,9 +3,11 @@ import { useEffect, useRef } from "react"
 import "ol/ol.css"
 import { map } from "../../map/MapContainer"
 import { layerPetaDasar } from "../../map/Layers"
+import { useAppStore } from "../../store"
 
 const MainMap = () => {
-
+  const matrix = useAppStore((state) => state.matrix)
+  const nodes = useAppStore((state) => state.nodes)
   const petaRef = useRef(null)
 
   useEffect(() => {
@@ -13,7 +15,8 @@ const MainMap = () => {
     map.setLayers([
         layerPetaDasar
     ])
-  }, [petaRef])
+    console.log(matrix);
+  }, [petaRef, matrix])
 
   return (
     <div
