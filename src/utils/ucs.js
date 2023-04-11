@@ -15,52 +15,34 @@ function toRadians(degrees) {
   return degrees * Math.PI / 180;
 }
 
-// function readTxtFile(filePath) {
-//     const fs = require('fs');
-//   // baca file dengan fs.readFileSync()
-//   const data = fs.readFileSync(filePath, 'utf8');
-
-//   // pisahkan data menjadi baris-baris
-//   var lines = data.split("\n");
-
-//   // buat array untuk menyimpan node
-//   var nodes = [];
-
-//   // buat array untuk menyimpan adjacency matrix
-//   var adjacencyMatrix = [];
-//   // loop through setiap baris
-//   for (var i = 1; i < lines.length; i++) {
-//     // pisahkan baris menjadi array angka
-//     var row = lines[i].trim().split(" ").map(Number);
-//     var nama = lines[i].trim().split(" ").map(String)[0];
-//     // jika ini adalah baris node
-//     if (i-1 < lines[0]) {
-//       // buat objek node baru dan tambahkan ke array nodes
-//       var node = {
-//         "id": i-1,
-//         "nama":nama,
-//         "x": row[1],
-//         "y": row[2]
-//       };
-//       nodes.push(node);
-//     }
-//     // jika ini adalah baris adjacency matrix
-//     else {
-//       // tambahkan array row ke adjacency matrix
-//       adjacencyMatrix.push(row);
-//     }
-//   }
-
-//   // buat objek JSON dari nodes dan adjacency matrix
-//   var graph = {
-//     "node": nodes,
-//     "matrix": adjacencyMatrix
-//   };
-
-// return graph;
-// }
-
-  
+function readTxtFile(filePath) {
+  const fs = require('fs');
+  const data = fs.readFileSync(filePath, 'utf8');
+  var lines = data.split("\n");
+  var nodes = [];
+  var adjacencyMatrix = [];
+  for (var i = 1; i < lines.length; i++) {
+    var row = lines[i].trim().split(" ").map(Number);
+    var nama = lines[i].trim().split(" ").map(String)[0];
+    if (i-1 < lines[0]) {
+      var node = {
+        "id": i-1,
+        "nama":nama,
+        "x": row[1],
+        "y": row[2]
+      };
+      nodes.push(node);
+    }
+    else {
+      adjacencyMatrix.push(row);
+    }
+  }
+  var graph = {
+    "node": nodes,
+    "matrix": adjacencyMatrix
+  };
+  return graph;
+}
 
 function euclideanDistance(point1, point2) {
     const dx = point2.x - point1.x;
@@ -124,15 +106,45 @@ export function ucsHaversine(graph, start, goal) {
 
   // test
 
-// let [a,b] = ucsEuclidean(graph, 1, 7)
+function ucsGraphBerbobot(graph,start,goal){
+  let queue = [[start, 0,[start]]];
+  let visited = new Set();
+  while (queue.length > 0) {
+    let [current, cost,riwayat] = queue.shift();
+      if (current === goal) {
+      return [cost,riwayat];
+    }
+
+  
+    visited.add(current);
+
+    
+    for (let i = 0; i < graph.matrix[current].length; i++) {
+      if (graph.matrix[current][i] > 0 && !visited.has(i)) {
+        newCost = cost + graph.matrix[current][i];
+        queue.push([i, newCost,riwayat.concat(i)]);
+      }
+    }
+    queue.sort((a, b) => a[1] - b[1]);
+  }
+
+  return null;
+}
+
+let graph = readTxtFile("src/utils/test2.txt")
+if(ucsEuclidean(graph, 0, 8)==null){
+  console.log("tidak ada jalur")
+}else{
+let [a,b] = ucsEuclidean(graph, 0, 8)
+  console.log("euclidean")
+  b.forEach(element => {
+      console.log(element)
+      console.log(graph.node[element].nama);   
+  });
+  console.log(a,b); 
+  console.log("haversine")
+}
 // let [c,d] = ucsHaversine(graph, 1, 7)
-// console.log("euclidean")
-// b.forEach(element => {
-//     console.log(element)
-//     console.log(graph.node[element].nama);   
-// });
-// console.log(a,b); // output: 2 (jalur terpendek dari node 0 ke 3 adalah 0 -> 1 -> 3 dengan cost 2)
-// console.log("haversine")
 // d.forEach(element => {
 //   console.log(element)
 //   console.log(graph.node[element].nama);   
