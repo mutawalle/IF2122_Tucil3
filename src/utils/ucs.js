@@ -131,16 +131,20 @@ function ucsGraphBerbobot(graph,start,goal){
   return null;
 }
 
-// let graph = readTxtFile("src/utils/test2.txt")
-// let [a,b] = ucsEuclidean(graph, 1, 7)
+let graph = readTxtFile("src/utils/test2.txt")
+if(ucsEuclidean(graph, 0, 8)==null){
+  console.log("tidak ada jalur")
+}else{
+let [a,b] = ucsEuclidean(graph, 0, 8)
+  console.log("euclidean")
+  b.forEach(element => {
+      console.log(element)
+      console.log(graph.node[element].nama);   
+  });
+  console.log(a,b); 
+  console.log("haversine")
+}
 // let [c,d] = ucsHaversine(graph, 1, 7)
-// console.log("euclidean")
-// b.forEach(element => {
-//     console.log(element)
-//     console.log(graph.node[element].nama);   
-// });
-// console.log(a,b); 
-// console.log("haversine")
 // d.forEach(element => {
 //   console.log(element)
 //   console.log(graph.node[element].nama);   
