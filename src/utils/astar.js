@@ -124,6 +124,33 @@ function euclideanDistance(point1, point2) {
     }
   }
 
+    /* jarak menggunakan graph berbobot */
+    function astarEuclidean(graph, start, goal) {
+      let heuristic = []
+      graph.node.forEach(element => {
+        heuristic.push(euclideanDistance(graph.node[goal],element))
+      });
+      let queue = [[start, 0,heuristic[start],[start]]];
+      while(queue.length > 0){
+        let current = queue.shift();
+        if(current[0] == goal){
+          return [current[2],current[3]];
+        }
+        for (let i = 0; i < graph.matrix[current[0]].length; i++) {
+          if(graph.matrix[current[0]][i] != 0){
+            let cost = current[1]+graph.matrix[current[0]][i];
+            let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
+            queue.push(temp);
+          }
+        }
+        queue.sort((a,b) => a[2]-b[2]);
+        // console.log(queue);
+        // queue.forEach(element => {
+        //   console.log(graph.node[element[0]].nama,heuristic[element[0]])
+        // });
+      }
+    }
+
 
 let graph = readTxtFile("src/utils/test2.txt");
 let start = 1;
