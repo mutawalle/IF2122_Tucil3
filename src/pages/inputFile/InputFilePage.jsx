@@ -1,10 +1,14 @@
-import {React,useState} from 'react'
+import {React,useRef,useState} from 'react'
 import Navbar from '../../components/navbar'
 import { Box, Flex, Text, Input, Button, Heading } from '@chakra-ui/react'
 import Footer from '../../components/footer'
 
 function InputFilePage() {
-  const [file, setFile] = useState("No File Selected")
+  const [file, setFile] = useState('no file')
+  const submitHandler = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <>
       <Navbar />
@@ -13,9 +17,11 @@ function InputFilePage() {
           <Heading fontSize={{ base: '4xl', lg: '6xl' }} mb={{ base: 4, md: 10, lg: 10 }} text-align="center">
             Input File
           </Heading>
-          <Input type="file" onChange={(e) => setFile(e.target.files[0].name)} />
+          <Input type="file" />
+          <Input type="text" placeholder="Start Node" />
+          <Input type="text" placeholder="End Node" />
           <Text>{file}</Text>
-          <Button colorScheme="blackAlpha" size="lg" onClick={() => console.log(file)}>Submit</Button>
+          <Button colorScheme="blackAlpha" size="lg" onClick={submitHandler}>Submit</Button>
         </Flex>
       </Box>
       <Footer/>
