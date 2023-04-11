@@ -8,7 +8,7 @@ function Home() {
   return (
     <>
       <Navbar />
-      <Box bg="#ffffff" minH="100vh">
+      {/* <Box bg="#ffffff" minH="100vh">
         <Flex flexDir="column" alignItems="center" gap={10} mt={10} mb={0}>
           <Heading
             fontSize={{ base: '4xl', lg: '6xl' }}
@@ -31,7 +31,12 @@ function Home() {
         </Flex>
           
       </Box>
-      <Footer/>
+      <Footer/> */}
+      {
+        useMap ?
+          <MainMap/> :
+          <MainGraph/>
+      }
     </>
   )
 }
