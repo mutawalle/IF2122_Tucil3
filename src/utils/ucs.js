@@ -53,6 +53,9 @@ function euclideanDistance(point1, point2) {
 
 /* perhitungan menggunakan euclidean distance */
 export function ucsEuclidean(graph, start, goal) {
+    console.log("graf",graph)
+    console.log("start",start)
+    console.log("goal",goal)
     let queue = [[start, 0,[start]]];
     let visited = new Set();
   
@@ -67,12 +70,13 @@ export function ucsEuclidean(graph, start, goal) {
   
       
       for (let i = 0; i < graph.matrix[current].length; i++) {
-        if (graph.matrix[current][i] === 1 && !visited.has(i)) {
+        if (graph.matrix[current][i] > 0 && !visited.has(i)) {
           let newCost = cost + euclideanDistance(graph.node[current], graph.node[i]);
           queue.push([i, newCost,riwayat.concat(i)]);
         }
       }
       queue.sort((a, b) => a[1] - b[1]);
+      console.log("queue",queue)
     }
   
     return null;

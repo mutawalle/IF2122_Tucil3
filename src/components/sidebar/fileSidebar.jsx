@@ -34,24 +34,43 @@ function FileSidebar() {
                 }
             }
         }
-    }, [selectedFile])
+    }, [selectedFile,tmpMatrix])
 
     const onSubmit = (data) => {
-        const graph = { matrix: tmpMatrix, node: nodes }
-        const algo = data.algo
-        let tmpLocalMatrix = tmpMatrix
-        let [a, b] = [0, 0]
-
-        algo === 'ucs' ?
-            [a, b] = ucsEuclidean(graph, Number(data.start), Number(data.finish))
-            :
-            [a, b] = astarEuclidean(graph, Number(data.start), Number(data.finish))
-
-        for (let i = 0; i < b.length - 1; i++) {
-            tmpMatrix[b[i]][b[i + 1]] = 2;
+        if (tmpMatrix) {
+          const graph = { matrix: tmpMatrix, node: nodes }
+          const algo = data.algo
+          let tmpLocalMatrix = tmpMatrix
+          let [a, b] = [0, 0]
+          console.log(graph);
+          if (algo === 'ucs') {
+            const result = ucsEuclidean(graph, Number(data.start), Number(data.finish));
+            if (result) {
+              [a, b] = result;
+              console.log(b)
+              for (let i = 0; i < b.length - 1; i++) {
+                tmpMatrix[b[i]][b[i + 1]] = 2;
+              }
+            } else {
+              console.log('Error: ucsEuclidean returned null');
+            }
+          } else {
+            const result = astarEuclidean(graph, Number(data.start), Number(data.finish));
+            if (result) {
+              [a, b] = result;
+              console.log(b)
+              for (let i = 0; i < b.length - 1; i++) {
+                tmpMatrix[b[i]][b[i + 1]] = 2;
+              }
+            } else {
+              console.log('Error: astarEuclidean returned null');
+            }
+          }
+          console.log(tmpLocalMatrix)
+          setMatrix(tmpLocalMatrix)
         }
-        setMatrix(tmpLocalMatrix)
-    }
+      }
+        
 
     return (
         <form className='h-64 flex flex-col items-center justify-evenly' onSubmit={handleSubmit(onSubmit)}>
