@@ -11,7 +11,8 @@ const LoadGraph = () => {
 
 
   useEffect(() => {
-    if(matrix != [[]]){
+    console.log(matrix);
+    if(matrix != [[]] && matrix != null){
       const graph = new Graph();
       for(let i=0;i<nodes.length;i++){
         graph.addNode(i, { x: nodes[i].x, y: nodes[i].y, size: 15, label: nodes[i].nama, color: "#0ea5e9" });

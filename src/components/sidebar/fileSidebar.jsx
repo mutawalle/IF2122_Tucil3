@@ -7,17 +7,12 @@ import { astarEuclidean } from '../../utils/astar';
 
 function FileSidebar() {
     const { register, handleSubmit, watch } = useForm()
-    const [tmpMatrix, setTmpMatrix] = useState()
     const selectedFile = watch('myFile')
     const setMatrix = useAppStore((state) => state.setMatrix)
     const setNodes = useAppStore((state) => state.setNodes)
     const setMatrixPath = useAppStore((state) => state.setMatrixPath)
     const matrix = useAppStore((state) => state.matrix)
     const nodes = useAppStore((state) => state.nodes)
-
-    useEffect(() => {
-        console.log(matrix);
-    }, [matrix])
 
     useEffect(() => {
         if (selectedFile) {
@@ -28,7 +23,7 @@ function FileSidebar() {
                 try {
                     const jsonObject = JSON.parse(e.target.result)
                     setNodes(jsonObject.node)
-                    setTmpMatrix(jsonObject.matrix)
+                    setMatrix(jsonObject.matrix)
                 } catch (err) {
                     console.error(err);
                 }
@@ -36,21 +31,34 @@ function FileSidebar() {
         }
     }, [selectedFile])
 
+
     const onSubmit = (data) => {
-        const graph = { matrix: tmpMatrix, node: nodes }
-        const algo = data.algo
-        let tmpLocalMatrix = tmpMatrix
-        let [a, b] = [0, 0]
+        const file = selectedFile[0]
+        const fileReader = new FileReader()
+        fileReader.readAsText(file, "UTF-8");
+        fileReader.onload = (e) => {
+            try {
+                console.log(data);
+                const jsonObject = JSON.parse(e.target.result)
+                setNodes(jsonObject.node)
+                setMatrix(jsonObject.matrix)
+                let tmpMatrix = jsonObject.matrix
+                let [a, b] = [0, 0]
 
-        algo === 'ucs' ?
-            [a, b] = ucsEuclidean(graph, Number(data.start), Number(data.finish))
-            :
-            [a, b] = astarEuclidean(graph, Number(data.start), Number(data.finish))
-
-        for (let i = 0; i < b.length - 1; i++) {
-            tmpMatrix[b[i]][b[i + 1]] = 2;
+                if(data.algo === 'ucs'){
+                    [a, b] = ucsEuclidean(jsonObject, Number(data.start), Number(data.finish))
+                }else{
+                    [a, b] = astarEuclidean(jsonObject, Number(data.start), Number(data.finish))
+                }
+                
+                for (let i = 0; i < b.length - 1; i++) {
+                    tmpMatrix[b[i]][b[i + 1]] = 2;
+                }
+                setMatrix(tmpMatrix)
+            } catch (err) {
+                console.error(err);
+            }
         }
-        setMatrix(tmpLocalMatrix)
     }
 
     return (
@@ -63,7 +71,7 @@ function FileSidebar() {
                     hover:file:bg-violet-100
                     hover:cursor-pointer
             "/>
-            <RadioGroup {...register('algo', { required: true })} defaultValue='ucs'>
+            <RadioGroup {...register('algo')} defaultValue='ucs'>
                 <Stack direction='row'>
                     <Radio value='ucs'>UCS</Radio>
                     <Radio value='astar'>A*</Radio>
