@@ -82,7 +82,7 @@ function euclideanDistance(point1, point2) {
         return [current[2],current[3]];
       }
       for (let i = 0; i < graph.matrix[current[0]].length; i++) {
-        if(graph.matrix[current[0]][i] != 0){
+        if(graph.matrix[current[0]][i] > 0){
           let cost = current[1]+haversine(graph.node[current[0]].x,graph.node[current[0]].y,graph.node[i].x,graph.node[i].y);
           let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
           queue.push(temp);
@@ -110,7 +110,7 @@ function euclideanDistance(point1, point2) {
         return [current[2],current[3]];
       }
       for (let i = 0; i < graph.matrix[current[0]].length; i++) {
-        if(graph.matrix[current[0]][i] != 0){
+        if(graph.matrix[current[0]][i] > 0){
           let cost = current[1]+euclideanDistance(graph.node[current[0]],graph.node[i]);
           let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
           queue.push(temp);
@@ -137,7 +137,7 @@ function euclideanDistance(point1, point2) {
           return [current[2],current[3]];
         }
         for (let i = 0; i < graph.matrix[current[0]].length; i++) {
-          if(graph.matrix[current[0]][i] != 0){
+          if(graph.matrix[current[0]][i] > 0){
             let cost = current[1]+graph.matrix[current[0]][i];
             let temp = [i,cost,cost+heuristic[i],current[3].concat(i)];
             queue.push(temp);
