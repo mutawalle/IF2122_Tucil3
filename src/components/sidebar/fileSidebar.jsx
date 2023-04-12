@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useAppStore } from '../../store';
 import { Radio, RadioGroup, Select, Stack } from '@chakra-ui/react';
 import { ucsEuclidean, ucsGraphBerbobot } from '../../utils/ucs';
-import { astarEuclidean } from '../../utils/astar';
+import { astarEuclidean,astarGrafBerbobot } from '../../utils/astar';
 import {
     Alert,
     AlertIcon,
@@ -75,7 +75,7 @@ function FileSidebar() {
                 if (data.algo === 'ucs') {
                     [a, b] = ucsGraphBerbobot(jsonObject, Number(data.start), Number(data.finish))
                 } else {
-                    [a, b] = astarEuclidean(jsonObject, Number(data.start), Number(data.finish))
+                    [a, b] = astarGrafBerbobot(jsonObject, Number(data.start), Number(data.finish))
                 }
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
@@ -138,13 +138,13 @@ function FileSidebar() {
                             <Box>
                                 <AlertTitle>Berhasil!</AlertTitle>
                                 <AlertDescription>
-                                    Jarak terdekat yang ditemukan {jarak}.
+                                    Jarak terdekat yang ditemukan {jarak} km.
                                 </AlertDescription>
                             </Box> :
                             <Box>
                                 <AlertTitle>Gagal!</AlertTitle>
                                 <AlertDescription>
-                                    File yang anda masukkan tidak sesuai format.
+                                    File yang anda masukkan tidak sesuai format atau tidak ada jalur yang ditemukan.
                                 </AlertDescription>
                             </Box>
                         }

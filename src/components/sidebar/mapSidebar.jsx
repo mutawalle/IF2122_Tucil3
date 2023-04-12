@@ -28,6 +28,7 @@ function MapSidebar() {
   const canAddEdge = useAppStore((state) => state.canAddEdge)
   const setCanAddNode = useAppStore((state) => state.setCanAddNode)
   const setCanAddEdge = useAppStore((state) => state.setCanAddEdge)
+  const [error, setError] = useState("error")
   const [jarak, setJarak] = useState(0)
     const {
         isOpen: isVisible,
@@ -87,16 +88,19 @@ function MapSidebar() {
     let tmpMatrix = [...matrix]
     let graph = { node: nodes, matrix }
     let [a, b] = [0, 0]
-
+    try{
     if (data.algo === 'ucs') {
       [a, b] = ucsHaversine(graph, Number(data.start), Number(data.finish))
     } else {
       [a, b] = astarHaversine(graph, Number(data.start), Number(data.finish))
     }
-
-    for (let i = 0; i < b.length - 1; i++) {
-      tmpMatrix[b[i]][b[i + 1]] = 2;
-      tmpMatrix[b[i+1]][b[i]] = 2;
+        for (let i = 0; i < b.length - 1; i++) {
+          tmpMatrix[b[i]][b[i + 1]] = 2;
+          tmpMatrix[b[i+1]][b[i]] = 2;
+        }
+        setError("success")
+    }catch(e){
+        setError("error")
     }
     onOpen()
     setJarak(a)
@@ -181,26 +185,35 @@ function MapSidebar() {
           </Select>
           <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75'>Search</button>
           {
-            isVisible &&
-            <Alert status='success' className='rounded-lg mt-2 flex justify-between'>
-              <div className='flex'>
-                <AlertIcon />
-                <Box>
-                  <AlertTitle>Berhasil!</AlertTitle>
-                  <AlertDescription>
-                    Jarak terdekat yang ditemukan {jarak}.
-                  </AlertDescription>
-                </Box>
-              </div>
-              <CloseButton
-                alignSelf='flex-start'
-                position='relative'
-                right={-1}
-                top={-1}
-                onClick={onClose}
-              />
-            </Alert>
-          }
+                isVisible &&
+                <Alert status={error} className='rounded-lg mt-2 flex justify-between'>
+                    <div className='flex'>
+                        <AlertIcon />
+                        {
+                            error === 'success' ?
+                            <Box>
+                                <AlertTitle>Berhasil!</AlertTitle>
+                                <AlertDescription>
+                                    Jarak terdekat yang ditemukan {jarak} km.
+                                </AlertDescription>
+                            </Box> :
+                            <Box>
+                                <AlertTitle>Gagal!</AlertTitle>
+                                <AlertDescription>
+                                    File yang anda masukkan tidak sesuai format atau tidak ada jalur yang dapat ditempuh.
+                                </AlertDescription>
+                            </Box>
+                        }
+                    </div>
+                    <CloseButton
+                        alignSelf='flex-start'
+                        position='relative'
+                        right={-1}
+                        top={-1}
+                        onClick={onClose}
+                    />
+                </Alert>
+            }
         </form>
       }
     </div>
