@@ -5,6 +5,15 @@ import { Button, Radio, RadioGroup, Select, Stack } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { ucsHaversine } from '../../utils/ucs'
 import { astarHaversine } from '../../utils/astar'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
+  CloseButton,
+  useDisclosure
+} from '@chakra-ui/react'
 
 function MapSidebar() {
   const [start, setStart] = useState(null)
@@ -19,6 +28,12 @@ function MapSidebar() {
   const canAddEdge = useAppStore((state) => state.canAddEdge)
   const setCanAddNode = useAppStore((state) => state.setCanAddNode)
   const setCanAddEdge = useAppStore((state) => state.setCanAddEdge)
+  const [jarak, setJarak] = useState(0)
+    const {
+        isOpen: isVisible,
+        onClose,
+        onOpen,
+    } = useDisclosure({ defaultIsOpen: false })
 
   const { register, handleSubmit } = useForm()
 
@@ -70,7 +85,7 @@ function MapSidebar() {
       }
     }
     let tmpMatrix = [...matrix]
-    let graph = {node: nodes, matrix}
+    let graph = { node: nodes, matrix }
     let [a, b] = [0, 0]
 
     if (data.algo === 'ucs') {
@@ -82,6 +97,8 @@ function MapSidebar() {
     for (let i = 0; i < b.length - 1; i++) {
       tmpMatrix[b[i]][b[i + 1]] = 2;
     }
+    onOpen()
+    setJarak(a)
     setMatrixPath(tmpMatrix)
     setMatrix(cnstMatrix)
   }
@@ -124,7 +141,7 @@ function MapSidebar() {
               {matrix.map((row, i) =>
                 row.map((el, j) => {
                   if (i < j && matrix[i][j] == 1) {
-                    return <span className='block my-2'>{(i + 1).toString() + " dan " + (j + 1).toString()} <DeleteIcon /></span>
+                    return <span className='block my-2'>{(i + 1).toString() + " dan " + (j + 1).toString()}</span>
                   } else {
                     return <></>
                   }
@@ -162,6 +179,27 @@ function MapSidebar() {
             }
           </Select>
           <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75'>Search</button>
+          {
+            isVisible &&
+            <Alert status='success' className='rounded-lg mt-2 flex justify-between'>
+              <div className='flex'>
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Berhasil!</AlertTitle>
+                  <AlertDescription>
+                    Jarak terdekat yang ditemukan {jarak}.
+                  </AlertDescription>
+                </Box>
+              </div>
+              <CloseButton
+                alignSelf='flex-start'
+                position='relative'
+                right={-1}
+                top={-1}
+                onClick={onClose}
+              />
+            </Alert>
+          }
         </form>
       }
     </div>

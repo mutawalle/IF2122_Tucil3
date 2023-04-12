@@ -11,7 +11,7 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { LineString } from 'ol/geom';
-import { Stroke } from 'ol/style';
+import { Stroke, Fill, Text as TextOL } from 'ol/style';
 
 const MainMap = () => {
   const petaRef = useRef(null)
@@ -67,10 +67,15 @@ const MainMap = () => {
           const point = new Point([node.x, node.y]);
           const feature = new Feature(point);
           feature.setStyle(new Style({
-            image: new Icon({
-              src: 'https://openlayers.org/en/latest/examples/data/icon.png',
-              anchor: [0.5, 1],
-              size: [32, 32]
+            text: new TextOL({
+              text: node.nama.toString(),
+              font: '16px Calibri,sans-serif',
+              fill: new Fill({ color: '#000' }),
+              stroke: new Stroke({ color: '#fff', width: 4 }),
+              offsetX: 0,
+              offsetY: -15,
+              textAlign: 'center',
+              textBaseline: 'bottom'
             })
           }));
           return feature;
@@ -93,10 +98,15 @@ const MainMap = () => {
         const point = new Point([node.x, node.y]);
         const feature = new Feature(point);
         feature.setStyle(new Style({
-          image: new Icon({
-            src: 'https://openlayers.org/en/latest/examples/data/icon.png',
-            anchor: [0.5, 1],
-            size: [32, 32]
+          text: new TextOL({
+            text: node.nama.toString(),
+            font: '16px Calibri,sans-serif',
+            fill: new Fill({ color: '#000' }),
+            stroke: new Stroke({ color: '#fff', width: 2 }),
+            offsetX: 0,
+            offsetY: -15,
+            textAlign: 'center',
+            textBaseline: 'bottom'
           })
         }));
         return feature;

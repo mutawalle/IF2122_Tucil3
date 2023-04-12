@@ -12,8 +12,6 @@ const LoadGraph = () => {
 
 
   useEffect(() => {
-    console.log(matrix)
-    console.log(matrixPath )
     if(matrix != [[]] && matrix != null){
       const graph = new Graph();
       for(let i=0;i<nodes.length;i++){
