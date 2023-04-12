@@ -50,10 +50,11 @@ function FileSidebar() {
                 }else{
                     [a, b] = astarEuclidean(jsonObject, Number(data.start), Number(data.finish))
                 }
-                
+                console.log("trace",b)
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
                 }
+                console.log("trace1",tmpMatrix)
                 setMatrix(tmpMatrix)
             } catch (err) {
                 console.error(err);
