@@ -9,8 +9,3 @@ export const map = new Map({
     zoom: 16,
   }),
 })
-
-map.on("click", function (event) {
-  const clickedCoordinate = event.coordinate
-  console.log("Clicked coordinate:", clickedCoordinate)
-})
