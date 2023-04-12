@@ -33,8 +33,7 @@ Kami diminta membuat program untuk membuat graf yang merepresentasikan peta (di 
 2. npm run 
 
 ## Cara Menjalankan Program
-1. Buka folder `src/Tubes2_BingChilling/obj/Debug` pada folder repositori
-2. Jalankan file `Tubes2_BingChilling.exe`
+1. npm run
 
 ## Authors
 
