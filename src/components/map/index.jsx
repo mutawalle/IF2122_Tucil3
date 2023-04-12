@@ -11,12 +11,13 @@ import Feature from 'ol/Feature';
 import Point from 'ol/geom/Point';
 import { Icon, Style } from 'ol/style';
 import { LineString } from 'ol/geom';
-import { Stroke } from 'ol/style';
+import { Stroke, Fill, Text as TextOL } from 'ol/style';
 
 const MainMap = () => {
   const petaRef = useRef(null)
   const nodes = useAppStore((state) => state.nodes)
   const matrix = useAppStore((state) => state.matrix)
+  const matrixPath = useAppStore((state) => state.matrixPath)
 
   useEffect(() => {
     if(matrix.length != 1){
@@ -31,9 +32,9 @@ const MainMap = () => {
         }
       }
       const vectorSourcePath = new VectorSource();
-      for(let i=0;i<matrix.length;i++){
-        for(let j=i+1;j<matrix.length;j++){
-          if(matrix[i][j] == 2){
+      for(let i=0;i<matrixPath.length;i++){
+        for(let j=i+1;j<matrixPath.length;j++){
+          if(matrixPath[i][j] == 2 || matrixPath[j][i] == 2){
             const line = new LineString([[nodes[i].x, nodes[i].y], [nodes[j].x, nodes[j].y]]);
             const feature = new Feature({ geometry: line });
             vectorSourcePath.addFeature(feature)
@@ -66,10 +67,15 @@ const MainMap = () => {
           const point = new Point([node.x, node.y]);
           const feature = new Feature(point);
           feature.setStyle(new Style({
-            image: new Icon({
-              src: 'https://openlayers.org/en/latest/examples/data/icon.png',
-              anchor: [0.5, 1],
-              size: [32, 32]
+            text: new TextOL({
+              text: node.nama.toString(),
+              font: '16px Calibri,sans-serif',
+              fill: new Fill({ color: '#000' }),
+              stroke: new Stroke({ color: '#fff', width: 4 }),
+              offsetX: 0,
+              offsetY: -15,
+              textAlign: 'center',
+              textBaseline: 'bottom'
             })
           }));
           return feature;
@@ -81,7 +87,7 @@ const MainMap = () => {
         source: vectorSourceNode
       });
 
-      map.setLayers([layerPetaDasar, vectorRoad, vectorNode, vectorPath])
+      map.setLayers([layerPetaDasar, vectorRoad , vectorNode, vectorPath])
     }
   }, [matrix])
 
@@ -92,10 +98,15 @@ const MainMap = () => {
         const point = new Point([node.x, node.y]);
         const feature = new Feature(point);
         feature.setStyle(new Style({
-          image: new Icon({
-            src: 'https://openlayers.org/en/latest/examples/data/icon.png',
-            anchor: [0.5, 1],
-            size: [32, 32]
+          text: new TextOL({
+            text: node.nama.toString(),
+            font: '16px Calibri,sans-serif',
+            fill: new Fill({ color: '#000' }),
+            stroke: new Stroke({ color: '#fff', width: 2 }),
+            offsetX: 0,
+            offsetY: -15,
+            textAlign: 'center',
+            textBaseline: 'bottom'
           })
         }));
         return feature;

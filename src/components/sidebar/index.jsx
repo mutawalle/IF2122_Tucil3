@@ -40,7 +40,7 @@ const Sidebar = () => {
     // }
 
     return (
-        <div className='bg-white w-full max-w-md m-2 p-3 rounded-xl absolute z-20 shadow-2xl'>
+        <div className='bg-white w-full max-w-md m-2 p-3 flex flex-col items-center rounded-xl absolute z-20 shadow-2xl'>
             <Checkbox onChange={(e) => {
                 setUseMap(e.target.checked)
             }}>use map</Checkbox>

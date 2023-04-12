@@ -1,29 +1,39 @@
 import React, { useEffect, useState } from 'react'
 import { useAppStore } from "../../store"
 import { DeleteIcon } from '@chakra-ui/icons'
-import {  Alert,
-  AlertIcon,
-  AlertTitle,
-  AlertDescription,
-Box,
-CloseButton,
-useDisclosure} from '@chakra-ui/react'
 import { Button, Radio, RadioGroup, Select, Stack } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { ucsHaversine } from '../../utils/ucs'
 import { astarHaversine } from '../../utils/astar'
+import {
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+  Box,
+  CloseButton,
+  useDisclosure
+} from '@chakra-ui/react'
 
 function MapSidebar() {
   const [start, setStart] = useState(null)
   const [finish, setFinish] = useState(null)
   const matrix = useAppStore((state) => state.matrix)
+  const matrixPath = useAppStore((state) => state.matrixPath)
   const nodes = useAppStore((state) => state.nodes)
   const setNodes = useAppStore((state) => state.setNodes)
   const setMatrix = useAppStore((state) => state.setMatrix)
+  const setMatrixPath = useAppStore((state) => state.setMatrixPath)
   const canAddNode = useAppStore((state) => state.canAddNode)
   const canAddEdge = useAppStore((state) => state.canAddEdge)
   const setCanAddNode = useAppStore((state) => state.setCanAddNode)
   const setCanAddEdge = useAppStore((state) => state.setCanAddEdge)
+  const [jarak, setJarak] = useState(0)
+    const {
+        isOpen: isVisible,
+        onClose,
+        onOpen,
+    } = useDisclosure({ defaultIsOpen: false })
 
   const { register, handleSubmit } = useForm()
 
@@ -36,6 +46,7 @@ function MapSidebar() {
 
   useEffect(() => {
     console.log(matrix);
+    console.log(matrixPath);
   }, [matrix])
 
   useEffect(() => {
@@ -51,6 +62,7 @@ function MapSidebar() {
         }
       }
     }
+    setMatrixPath(tmpMatrix)
     setMatrix(tmpMatrix)
   }, [canAddNode])
 
@@ -58,13 +70,22 @@ function MapSidebar() {
     let tMatrix = [...matrix]
     tMatrix[start][finish] = 1
     tMatrix[finish][start] = 1
+    setMatrixPath(tMatrix)
     setMatrix(tMatrix)
   }
-  const [jarak, setJarak] = useState(0)
 
   const onSubmit = (data) => {
+    let cnstMatrix = []
+    for (let i = 0; i < matrix.length; i++) {
+      cnstMatrix[i] = new Array(matrix.length)
+    }
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix.length; j++) {
+        cnstMatrix[i][j] = matrix[i][j]
+      }
+    }
     let tmpMatrix = [...matrix]
-    let graph = {node: nodes, matrix}
+    let graph = { node: nodes, matrix }
     let [a, b] = [0, 0]
 
     if (data.algo === 'ucs') {
@@ -78,13 +99,10 @@ function MapSidebar() {
     }
     onOpen()
     setJarak(a)
-    setMatrix(tmpMatrix)
+    setMatrixPath(tmpMatrix)
+    setMatrix(cnstMatrix)
   }
-  const {
-    isOpen: isVisible,
-    onClose,
-    onOpen,
-  } = useDisclosure({ defaultIsOpen: false })
+
   return (
     <div>
       {canAddNode && (nodes.length > 0 ?
@@ -123,7 +141,7 @@ function MapSidebar() {
               {matrix.map((row, i) =>
                 row.map((el, j) => {
                   if (i < j && matrix[i][j] == 1) {
-                    return <span className='block my-2'>{(i + 1).toString() + " dan " + (j + 1).toString()} <DeleteIcon /></span>
+                    return <span className='block my-2'>{(i + 1).toString() + " dan " + (j + 1).toString()}</span>
                   } else {
                     return <></>
                   }
@@ -161,26 +179,29 @@ function MapSidebar() {
             }
           </Select>
           <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75'>Search</button>
+          {
+            isVisible &&
+            <Alert status='success' className='rounded-lg mt-2 flex justify-between'>
+              <div className='flex'>
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>Berhasil!</AlertTitle>
+                  <AlertDescription>
+                    Jarak terdekat yang ditemukan {jarak}.
+                  </AlertDescription>
+                </Box>
+              </div>
+              <CloseButton
+                alignSelf='flex-start'
+                position='relative'
+                right={-1}
+                top={-1}
+                onClick={onClose}
+              />
+            </Alert>
+          }
         </form>
       }
-      {isVisible &&
-        <Alert status='success'>
-            <AlertIcon />
-            <Box>
-            <AlertTitle>Berhasil!</AlertTitle>
-            <AlertDescription>
-                Jarak terdekat yang ditemukan {jarak}.
-            </AlertDescription>
-            </Box>
-            <CloseButton
-            alignSelf='flex-start'
-            position='relative'
-            right={-1}
-            top={-1}
-            onClick={onClose}
-            />
-        </Alert>
-        }
     </div>
   )
 }

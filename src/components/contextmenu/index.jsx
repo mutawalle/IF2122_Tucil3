@@ -18,9 +18,9 @@ function ContextMenuElement({event}) {
     }
 
     return (
-        show  && 
-        <div className='p-2 text-lg font-bold bg-white rounded-lg absolute z-50 left-[50%] top-[200px] shadow-xl'>
-            <Button onClick={() => handleClick()}>Add Node</Button>
+        (show && canAddNode)  && 
+        <div className='text-lg font-bold bg-white rounded-lg absolute z-50 left-[50%] top-[200px] shadow-xl'>
+            <Button className='p-2' onClick={() => handleClick()}>Add Node</Button>
         </div>
     )
 }

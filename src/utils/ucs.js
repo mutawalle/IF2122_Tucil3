@@ -108,7 +108,7 @@ function ucsHaversine(graph, start, goal) {
 
   // test
 
-function ucsGraphBerbobot(graph,start,goal){
+export function ucsGraphBerbobot(graph,start,goal){
   let queue = [[start, 0,[start]]];
   let visited = new Set();
   while (queue.length > 0) {
