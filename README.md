@@ -1,5 +1,5 @@
 <div align="center">
-  <h1 align="center">Maze Treasure Hunt</h1>
+  <h1 align="center">Shortest Path Finding</h1>
 
   <p align="center">
     Shortest Path Finding with Algorithm UCS and A*!
