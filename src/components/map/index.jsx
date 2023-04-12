@@ -30,11 +30,32 @@ const MainMap = () => {
           }
         }
       }
+      const vectorSourcePath = new VectorSource();
+      for(let i=0;i<matrix.length;i++){
+        for(let j=i+1;j<matrix.length;j++){
+          if(matrix[i][j] == 2){
+            const line = new LineString([[nodes[i].x, nodes[i].y], [nodes[j].x, nodes[j].y]]);
+            const feature = new Feature({ geometry: line });
+            vectorSourcePath.addFeature(feature)
+          }
+        }
+      }
+
       const vectorRoad = new VectorLayer({
         source: vectorSourceRoad,
         style: new Style({
           stroke: new Stroke({
             color: 'blue',
+            width: 2
+          })
+        })
+      });
+
+      const vectorPath = new VectorLayer({
+        source: vectorSourcePath,
+        style: new Style({
+          stroke: new Stroke({
+            color: 'red',
             width: 2
           })
         })
@@ -60,7 +81,7 @@ const MainMap = () => {
         source: vectorSourceNode
       });
 
-      map.setLayers([layerPetaDasar, vectorRoad, vectorNode])
+      map.setLayers([layerPetaDasar, vectorRoad, vectorNode, vectorPath])
     }
   }, [matrix])
 

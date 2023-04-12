@@ -46,13 +46,13 @@ function toRadians(degrees) {
 // return graph;
 // }
 
-export function euclideanDistance(point1, point2) {
+function euclideanDistance(point1, point2) {
   const dx = point2.x - point1.x;
   const dy = point2.y - point1.y;
   return Math.sqrt(dx * dx + dy * dy);
 }
 /* perhitungan jarak menggunakan haversine */
-  function astarHaversine(graph, start, goal) {
+export  function astarHaversine(graph, start, goal) {
     /* astar algorithm */
     let heuristic = []
     let visited = new Set();
