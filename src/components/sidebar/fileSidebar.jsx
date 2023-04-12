@@ -79,6 +79,7 @@ function FileSidebar() {
                 }
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
+                    tmpMatrix[b[i+1]][b[i]] = 2;
                 }
                 console.log("haha",jsonObject.matrix)
                 console.log("jalur",b)
