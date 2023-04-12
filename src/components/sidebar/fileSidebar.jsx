@@ -10,8 +10,6 @@ function FileSidebar() {
     const selectedFile = watch('myFile')
     const setMatrix = useAppStore((state) => state.setMatrix)
     const setNodes = useAppStore((state) => state.setNodes)
-    const setMatrixPath = useAppStore((state) => state.setMatrixPath)
-    const matrix = useAppStore((state) => state.matrix)
     const nodes = useAppStore((state) => state.nodes)
 
     useEffect(() => {

@@ -90,7 +90,6 @@ export function astarEuclidean(graph, start, goal) {
     }
     );
     let queue = [[start, 0,heuristic[start],[start]]];
-    console.log(heuristic);
     while(queue.length > 0){
       let current = queue.shift();
       visited.add(current[0]);
