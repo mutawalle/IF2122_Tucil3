@@ -2,13 +2,13 @@
   <h1 align="center">Maze Treasure Hunt</h1>
 
   <p align="center">
-    Maze Treasure Hunt with Depth First Search and Breadth First Search!
+    Shortest Path Finding with Algorithm UCS and A*!
     <br />
     ·
   </p>
 </div>
-Tugas Besar 2 IF2211 Strategi Algoritma
-Pengaplikasian Algoritma BFS dan DFS dalam Implementasi Path Finding
+Tugas Kecil 3 IF2211 Strategi Algoritma
+Pengaplikasian Algoritma UCS dan A* dalam mencari jarak terpendek
 
 ## Daftar Isi
 * [Deskripsi Singkat Program](#deskripsi-singkat-program)
