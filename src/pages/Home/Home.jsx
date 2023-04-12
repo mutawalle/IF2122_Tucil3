@@ -6,7 +6,6 @@ import Sidebar from '../../components/sidebar'
 
 function Home() {
   const useMap = useAppStore((state) => state.useMap)
-
   return (
     <>
       <Sidebar/>
