@@ -17,6 +17,7 @@ const MainMap = () => {
   const petaRef = useRef(null)
   const nodes = useAppStore((state) => state.nodes)
   const matrix = useAppStore((state) => state.matrix)
+  const matrixPath = useAppStore((state) => state.matrixPath)
 
   useEffect(() => {
     if(matrix.length != 1){
@@ -31,9 +32,9 @@ const MainMap = () => {
         }
       }
       const vectorSourcePath = new VectorSource();
-      for(let i=0;i<matrix.length;i++){
-        for(let j=i+1;j<matrix.length;j++){
-          if(matrix[i][j] == 2){
+      for(let i=0;i<matrixPath.length;i++){
+        for(let j=i+1;j<matrixPath.length;j++){
+          if(matrixPath[i][j] == 2 || matrixPath[j][i] == 2){
             const line = new LineString([[nodes[i].x, nodes[i].y], [nodes[j].x, nodes[j].y]]);
             const feature = new Feature({ geometry: line });
             vectorSourcePath.addFeature(feature)
@@ -81,7 +82,7 @@ const MainMap = () => {
         source: vectorSourceNode
       });
 
-      map.setLayers([layerPetaDasar, vectorRoad, vectorNode, vectorPath])
+      map.setLayers([layerPetaDasar, vectorRoad , vectorNode, vectorPath])
     }
   }, [matrix])
 

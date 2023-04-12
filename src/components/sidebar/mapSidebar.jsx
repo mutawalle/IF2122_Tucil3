@@ -10,9 +10,11 @@ function MapSidebar() {
   const [start, setStart] = useState(null)
   const [finish, setFinish] = useState(null)
   const matrix = useAppStore((state) => state.matrix)
+  const matrixPath = useAppStore((state) => state.matrixPath)
   const nodes = useAppStore((state) => state.nodes)
   const setNodes = useAppStore((state) => state.setNodes)
   const setMatrix = useAppStore((state) => state.setMatrix)
+  const setMatrixPath = useAppStore((state) => state.setMatrixPath)
   const canAddNode = useAppStore((state) => state.canAddNode)
   const canAddEdge = useAppStore((state) => state.canAddEdge)
   const setCanAddNode = useAppStore((state) => state.setCanAddNode)
@@ -29,6 +31,7 @@ function MapSidebar() {
 
   useEffect(() => {
     console.log(matrix);
+    console.log(matrixPath);
   }, [matrix])
 
   useEffect(() => {
@@ -44,6 +47,7 @@ function MapSidebar() {
         }
       }
     }
+    setMatrixPath(tmpMatrix)
     setMatrix(tmpMatrix)
   }, [canAddNode])
 
@@ -51,10 +55,20 @@ function MapSidebar() {
     let tMatrix = [...matrix]
     tMatrix[start][finish] = 1
     tMatrix[finish][start] = 1
+    setMatrixPath(tMatrix)
     setMatrix(tMatrix)
   }
 
   const onSubmit = (data) => {
+    let cnstMatrix = []
+    for (let i = 0; i < matrix.length; i++) {
+      cnstMatrix[i] = new Array(matrix.length)
+    }
+    for (let i = 0; i < matrix.length; i++) {
+      for (let j = 0; j < matrix.length; j++) {
+        cnstMatrix[i][j] = matrix[i][j]
+      }
+    }
     let tmpMatrix = [...matrix]
     let graph = {node: nodes, matrix}
     let [a, b] = [0, 0]
@@ -68,7 +82,8 @@ function MapSidebar() {
     for (let i = 0; i < b.length - 1; i++) {
       tmpMatrix[b[i]][b[i + 1]] = 2;
     }
-    setMatrix(tmpMatrix)
+    setMatrixPath(tmpMatrix)
+    setMatrix(cnstMatrix)
   }
 
   return (

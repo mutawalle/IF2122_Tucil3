@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useAppStore } from '../../store';
 import { Radio, RadioGroup, Select, Stack } from '@chakra-ui/react';
-import { ucsEuclidean } from '../../utils/ucs';
+import { ucsEuclidean, ucsGraphBerbobot } from '../../utils/ucs';
 import { astarEuclidean } from '../../utils/astar';
 
 function FileSidebar() {
@@ -11,16 +11,28 @@ function FileSidebar() {
     const setMatrix = useAppStore((state) => state.setMatrix)
     const setNodes = useAppStore((state) => state.setNodes)
     const nodes = useAppStore((state) => state.nodes)
+    const matrixPath = useAppStore((state) => state.matrixPath)
+    const setMatrixPath = useAppStore((state) => state.setMatrixPath)
 
     useEffect(() => {
         if (selectedFile) {
             const file = selectedFile[0]
             const fileReader = new FileReader()
-            fileReader.readAsText(file, "UTF-8");
+            fileReader.readAsText(file, "UTF-8")
             fileReader.onload = (e) => {
                 try {
                     const jsonObject = JSON.parse(e.target.result)
+                    let tmpMatrix = []
+                    for (let i = 0; i < jsonObject.node.length; i++) {
+                        tmpMatrix[i] = new Array(jsonObject.node.length)
+                    }
+                    for (let i = 0; i < jsonObject.node.length; i++) {
+                        for (let j = 0; j < jsonObject.node.length; j++) {
+                            tmpMatrix[i][j] = 0
+                        }
+                    }
                     setNodes(jsonObject.node)
+                    setMatrixPath(tmpMatrix)
                     setMatrix(jsonObject.matrix)
                 } catch (err) {
                     console.error(err);
@@ -44,16 +56,15 @@ function FileSidebar() {
                 let [a, b] = [0, 0]
 
                 if(data.algo === 'ucs'){
-                    [a, b] = ucsEuclidean(jsonObject, Number(data.start), Number(data.finish))
+                    [a, b] = ucsGraphBerbobot(jsonObject, Number(data.start), Number(data.finish))
                 }else{
                     [a, b] = astarEuclidean(jsonObject, Number(data.start), Number(data.finish))
                 }
-                console.log("trace",b)
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
                 }
-                console.log("trace1",tmpMatrix)
-                setMatrix(tmpMatrix)
+                setMatrix(jsonObject.matrix)
+                setMatrixPath(tmpMatrix)
             } catch (err) {
                 console.error(err);
             }

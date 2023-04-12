@@ -6,11 +6,14 @@ import { useAppStore } from "../../store";
 
 const LoadGraph = () => {
   const matrix = useAppStore((state) => state.matrix)
+  const matrixPath = useAppStore((state) => state.matrixPath)
   const nodes = useAppStore((state) => state.nodes)
   const loadGraph = useLoadGraph();
 
 
   useEffect(() => {
+    console.log(matrix)
+    console.log(matrixPath )
     if(matrix != [[]] && matrix != null){
       const graph = new Graph();
       for(let i=0;i<nodes.length;i++){
@@ -18,10 +21,10 @@ const LoadGraph = () => {
       }
       for(let i=0;i<nodes.length;i++){
         for(let j=i+1;j<nodes.length;j++){
-          if(matrix[i][j] == 2){
-            graph.addEdge(i,j, {color: "#ef4444", size: 5})
-          }else if(matrix[i][j] == 1){
-            graph.addEdge(i,j, {color: "#0ea5e9", size: 5})
+          if(matrixPath[i][j] == 2){
+            graph.addEdge(i,j, {label: 'erf', color: "#ef4444", size: 5})
+          }else if(matrix[i][j] > 0){
+            graph.addEdge(i,j, {label: 'iko', color: "#0ea5e9", size: 5})
           }
         }
       }
