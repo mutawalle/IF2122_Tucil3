@@ -123,6 +123,9 @@ const MainMap = () => {
       e.preventDefault()
       render(<ContextMenuElement event={e} />)
     })
+    map.on("click", (e) => {
+      console.log(e.coordinate)
+    })
   }, [petaRef])
 
   return (

@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useAppStore } from '../../store';
-import { Radio, RadioGroup, Select, Stack } from '@chakra-ui/react';
+import { Radio, RadioGroup, Select, Stack,
+    Alert,
+    AlertIcon,
+    AlertTitle,
+    AlertDescription,
+Box,
+CloseButton,
+useDisclosure } from '@chakra-ui/react';
 import { ucsEuclidean } from '../../utils/ucs';
 import { astarEuclidean } from '../../utils/astar';
 
@@ -29,7 +36,7 @@ function FileSidebar() {
         }
     }, [selectedFile])
 
-
+    const [jarak, setJarak] = useState(0)
     const onSubmit = (data) => {
         const file = selectedFile[0]
         const fileReader = new FileReader()
@@ -48,19 +55,24 @@ function FileSidebar() {
                 }else{
                     [a, b] = astarEuclidean(jsonObject, Number(data.start), Number(data.finish))
                 }
-                console.log("trace",b)
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
                 }
-                console.log("trace1",tmpMatrix)
                 setMatrix(tmpMatrix)
+                setJarak(a)
+                onOpen()
             } catch (err) {
                 console.error(err);
             }
         }
     }
-
+    const {
+        isOpen: isVisible,
+        onClose,
+        onOpen,
+      } = useDisclosure({ defaultIsOpen: false })
     return (
+        <>
         <form className='h-64 flex flex-col items-center justify-evenly' onSubmit={handleSubmit(onSubmit)}>
             <input type="file" {...register('myFile', { required: true })} class="block w-56 text-sm text-slate-500
                     file:mr-4 file:py-2 file:px-4
@@ -94,6 +106,26 @@ function FileSidebar() {
             </Select>
             <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75' disabled={!selectedFile}>Search</button>
         </form>
+        {isVisible &&
+            <Alert status='success'>
+                <AlertIcon />
+                <Box>
+                <AlertTitle>Success!</AlertTitle>
+                <AlertDescription>
+                    Jarak terdekat yang ditemukan {jarak}.
+                </AlertDescription>
+                </Box>
+                <CloseButton
+                alignSelf='flex-start'
+                position='relative'
+                right={-1}
+                top={-1}
+                onClick={onClose}
+                />
+            </Alert>
+          }
+        </>
+        
     )
 }
 

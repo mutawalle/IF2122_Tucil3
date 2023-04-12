@@ -109,7 +109,7 @@ export function astarEuclidean(graph, start, goal) {
   }
 
     /* jarak menggunakan graph berbobot */
-    function astarEuclidean2(graph, start, goal) {
+    function astargrafberbobot(graph, start, goal) {
       let heuristic = []
     let visited = new Set();
     graph.node.forEach(element => {

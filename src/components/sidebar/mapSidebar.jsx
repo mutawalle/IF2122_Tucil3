@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { useAppStore } from "../../store"
 import { DeleteIcon } from '@chakra-ui/icons'
+import {  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+Box,
+CloseButton,
+useDisclosure} from '@chakra-ui/react'
 import { Button, Radio, RadioGroup, Select, Stack } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { ucsHaversine } from '../../utils/ucs'
@@ -53,6 +60,7 @@ function MapSidebar() {
     tMatrix[finish][start] = 1
     setMatrix(tMatrix)
   }
+  const [jarak, setJarak] = useState(0)
 
   const onSubmit = (data) => {
     let tmpMatrix = [...matrix]
@@ -68,9 +76,15 @@ function MapSidebar() {
     for (let i = 0; i < b.length - 1; i++) {
       tmpMatrix[b[i]][b[i + 1]] = 2;
     }
+    onOpen()
+    setJarak(a)
     setMatrix(tmpMatrix)
   }
-
+  const {
+    isOpen: isVisible,
+    onClose,
+    onOpen,
+  } = useDisclosure({ defaultIsOpen: false })
   return (
     <div>
       {canAddNode && (nodes.length > 0 ?
@@ -149,6 +163,24 @@ function MapSidebar() {
           <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75'>Search</button>
         </form>
       }
+      {isVisible &&
+        <Alert status='success'>
+            <AlertIcon />
+            <Box>
+            <AlertTitle>Berhasil!</AlertTitle>
+            <AlertDescription>
+                Jarak terdekat yang ditemukan {jarak}.
+            </AlertDescription>
+            </Box>
+            <CloseButton
+            alignSelf='flex-start'
+            position='relative'
+            right={-1}
+            top={-1}
+            onClick={onClose}
+            />
+        </Alert>
+        }
     </div>
   )
 }
