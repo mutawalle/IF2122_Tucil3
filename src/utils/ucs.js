@@ -53,9 +53,7 @@ function euclideanDistance(point1, point2) {
 
 /* perhitungan menggunakan euclidean distance */
 export function ucsEuclidean(graph, start, goal) {
-    console.log("graf",graph)
-    console.log("start",start)
-    console.log("goal",goal)
+  
     let queue = [[start, 0,[start]]];
     let visited = new Set();
   
