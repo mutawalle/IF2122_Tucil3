@@ -23,6 +23,7 @@ function FileSidebar() {
     const matrixPath = useAppStore((state) => state.matrixPath)
     const setMatrixPath = useAppStore((state) => state.setMatrixPath)
     const [jarak, setJarak] = useState(0)
+    const [error, setError] = useState("error")
     const {
         isOpen: isVisible,
         onClose,
@@ -79,16 +80,17 @@ function FileSidebar() {
                 for (let i = 0; i < b.length - 1; i++) {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
                 }
-                onOpen()
                 console.log("haha",jsonObject.matrix)
                 console.log("jalur",b)
                 setJarak(a)
                 setMatrix(jsonObject.matrix)
+                setError("success")
                 setMatrixPath(tmpMatrix)
             } catch (err) {
-                onOpenError()
+                setError("error")
                 console.error(err);
             }
+            onOpen()
         }
     }
 
@@ -127,15 +129,24 @@ function FileSidebar() {
             <button type="submit" className='w-20 p-2 font-bold rounded-md bg-green-700 text-white disabled:opacity-75' disabled={!selectedFile}>Search</button>
             {
                 isVisible &&
-                <Alert status='success' className='rounded-lg mt-2 flex justify-between'>
+                <Alert status={error} className='rounded-lg mt-2 flex justify-between'>
                     <div className='flex'>
                         <AlertIcon />
-                        <Box>
-                            <AlertTitle>Berhasil!</AlertTitle>
-                            <AlertDescription>
-                                Jarak terdekat yang ditemukan {jarak}.
-                            </AlertDescription>
-                        </Box>
+                        {
+                            error === 'success' ?
+                            <Box>
+                                <AlertTitle>Berhasil!</AlertTitle>
+                                <AlertDescription>
+                                    Jarak terdekat yang ditemukan {jarak}.
+                                </AlertDescription>
+                            </Box> :
+                            <Box>
+                                <AlertTitle>Gagal!</AlertTitle>
+                                <AlertDescription>
+                                    File yang anda masukkan tidak sesuai format.
+                                </AlertDescription>
+                            </Box>
+                        }
                     </div>
                     <CloseButton
                         alignSelf='flex-start'
@@ -143,27 +154,6 @@ function FileSidebar() {
                         right={-1}
                         top={-1}
                         onClick={onClose}
-                    />
-                </Alert>
-            }
-            {
-                isVisibleError &&
-                <Alert status='error' className='rounded-lg mt-2 flex justify-between'>
-                    <div className='flex'>
-                        <AlertIcon />
-                        <Box>
-                            <AlertTitle>Berhasil!</AlertTitle>
-                            <AlertDescription>
-                                Jarak terdekat yang ditemukan {jarak}.
-                            </AlertDescription>
-                        </Box>
-                    </div>
-                    <CloseButton
-                        alignSelf='flex-start'
-                        position='relative'
-                        right={-1}
-                        top={-1}
-                        onClick={onCloseError}
                     />
                 </Alert>
             }
