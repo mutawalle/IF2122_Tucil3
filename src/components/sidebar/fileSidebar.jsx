@@ -29,6 +29,7 @@ function FileSidebar() {
         onOpen,
     } = useDisclosure({ defaultIsOpen: false })
 
+
     useEffect(() => {
         if (selectedFile) {
             const file = selectedFile[0]
@@ -79,10 +80,13 @@ function FileSidebar() {
                     tmpMatrix[b[i]][b[i + 1]] = 2;
                 }
                 onOpen()
+                console.log("haha",jsonObject.matrix)
+                console.log("jalur",b)
                 setJarak(a)
                 setMatrix(jsonObject.matrix)
                 setMatrixPath(tmpMatrix)
             } catch (err) {
+                onOpenError()
                 console.error(err);
             }
         }
@@ -139,6 +143,27 @@ function FileSidebar() {
                         right={-1}
                         top={-1}
                         onClick={onClose}
+                    />
+                </Alert>
+            }
+            {
+                isVisibleError &&
+                <Alert status='error' className='rounded-lg mt-2 flex justify-between'>
+                    <div className='flex'>
+                        <AlertIcon />
+                        <Box>
+                            <AlertTitle>Berhasil!</AlertTitle>
+                            <AlertDescription>
+                                Jarak terdekat yang ditemukan {jarak}.
+                            </AlertDescription>
+                        </Box>
+                    </div>
+                    <CloseButton
+                        alignSelf='flex-start'
+                        position='relative'
+                        right={-1}
+                        top={-1}
+                        onClick={onCloseError}
                     />
                 </Alert>
             }

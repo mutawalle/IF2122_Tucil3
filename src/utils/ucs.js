@@ -15,34 +15,34 @@ function toRadians(degrees) {
   return degrees * Math.PI / 180;
 }
 
-function readTxtFile(filePath) {
-  const fs = require('fs');
-  const data = fs.readFileSync(filePath, 'utf8');
-  var lines = data.split("\n");
-  var nodes = [];
-  var adjacencyMatrix = [];
-  for (var i = 1; i < lines.length; i++) {
-    var row = lines[i].trim().split(" ").map(Number);
-    var nama = lines[i].trim().split(" ").map(String)[0];
-    if (i-1 < lines[0]) {
-      var node = {
-        "id": i-1,
-        "nama":nama,
-        "x": row[1],
-        "y": row[2]
-      };
-      nodes.push(node);
-    }
-    else {
-      adjacencyMatrix.push(row);
-    }
-  }
-  var graph = {
-    "node": nodes,
-    "matrix": adjacencyMatrix
-  };
-  return graph;
-}
+// function readTxtFile(filePath) {
+//   const fs = require('fs');
+//   const data = fs.readFileSync(filePath, 'utf8');
+//   var lines = data.split("\n");
+//   var nodes = [];
+//   var adjacencyMatrix = [];
+//   for (var i = 1; i < lines.length; i++) {
+//     var row = lines[i].trim().split(" ").map(Number);
+//     var nama = lines[i].trim().split(" ").map(String)[0];
+//     if (i-1 < lines[0]) {
+//       var node = {
+//         "id": i-1,
+//         "nama":nama,
+//         "x": row[1],
+//         "y": row[2]
+//       };
+//       nodes.push(node);
+//     }
+//     else {
+//       adjacencyMatrix.push(row);
+//     }
+//   }
+//   var graph = {
+//     "node": nodes,
+//     "matrix": adjacencyMatrix
+//   };
+//   return graph;
+// }
 
 function euclideanDistance(point1, point2) {
     const dx = point2.x - point1.x;
@@ -52,7 +52,7 @@ function euclideanDistance(point1, point2) {
 
 
 /* perhitungan menggunakan euclidean distance */
-function ucsEuclidean(graph, start, goal) {
+export function ucsEuclidean(graph, start, goal) {
   
     let queue = [[start, 0,[start]]];
     let visited = new Set();
@@ -81,7 +81,7 @@ function ucsEuclidean(graph, start, goal) {
   }
   
 /* perhitungan menggunakan haversine distance */
-function ucsHaversine(graph, start, goal) {
+export function ucsHaversine(graph, start, goal) {
     let queue = [[start, 0,[start]]];
     let visited = new Set();
     while (queue.length > 0) {
@@ -184,17 +184,17 @@ export function ucsGraphBerbobot(graph,start,goal){
 //   console.log(graph.node[element].nama);   
 // });
 // console.log(c,d);
-let graph = readTxtFile("src/utils/test.txt")
-function gantisatu(matrix,graph){
-  for(let i=0;i<matrix.length;i++){
-    for(let j=0;j<matrix[i].length;j++){
-      if(matrix[i][j]==1){
-        matrix[i][j]= euclideanDistance(graph.node[i], graph.node[j])
-      }
-    }
-  }
-  return matrix
+// let graph = readTxtFile("src/utils/test.txt")
+// function gantisatu(matrix,graph){
+//   for(let i=0;i<matrix.length;i++){
+//     for(let j=0;j<matrix[i].length;j++){
+//       if(matrix[i][j]==1){
+//         matrix[i][j]= euclideanDistance(graph.node[i], graph.node[j])
+//       }
+//     }
+//   }
+//   return matrix
 
-}
-graph.matrix = gantisatu(graph.matrix,graph)
-console.log(graph)
+// }
+// graph.matrix = gantisatu(graph.matrix,graph)
+// console.log(graph)
