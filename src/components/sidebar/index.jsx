@@ -47,7 +47,7 @@ const Sidebar = () => {
             {
                 useMap ? 
                 <MapSidebar/> :
-                <FileSidebar/>
+                <FileSidebar/> 
             }
         </div>
     )
